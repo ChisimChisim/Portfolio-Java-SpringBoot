@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Book List</title>
+<link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7-1/css/bootstrap.css"  rel="stylesheet"  media="screen"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}" />
+    <script th:src="@{/webjars/jquery/2.1.4/jquery.min.js}" src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js" ></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}" src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7-1/css/bootstrap.js" ></script>  
+</head>
+<body>
+<div class="container">
+  <h1>Book Borrowing System</h1>
+  <div class="col-md-12">
+      <fieldset>
+        <legend>
+          Book List
+        </legend>
+       
+       <table class="table table-striped table-bordered table-condensed">
+            <tr>
+              <th>Book No.</th>
+              <th>Title</th>
+              <th>Average rating</th>
+              <th>Genre</th>
+              <th>Author</th>
+              <th>Released date</th>
+              <th>Status</th>
+            </tr>
+            <tr th:each="bookInfo : ${books}">
+               <td>
+                 <span th:text="${bookInfo.book.bookId}"></span>
+               </td> 
+               <td>
+                  <span th:text="${bookInfo.book.title}"></span>
+               </td> 
+               <td  align="center">
+               <form th:action="@{'/books/' + ${bookInfo.book.bookId}}" method="get" >
+                   <span th:text="${bookInfo.aveRate}" class="booklist1"></span>
+                   <input type="submit" class="btn btn-default btn-sm" value="check reviews"/>
+               </form>
+               </td> 
+               <td>
+                 <span th:text="${bookInfo.book.genru}"></span>
+               </td> 
+               <td>
+                 <span th:text="${bookInfo.book.author}"></span>
+               </td> 
+               <td>
+                 <span th:text="${bookInfo.book.releasedDate}"></span>
+               </td> 
+               <td align="center">
+                 <span th:if="${bookInfo.book.bookStatus.status=='1'}"> 
+                    <input class="btn btn-primary btn-sm" type="submit" value="Check-out"/></span>
+                 <span th:if="${bookInfo.book.bookStatus.status=='0'}"> Unavailable</span>
+               </td> 
+            </tr>
+         </table>
+      </fieldset>
+  </div>
+</div>
+
+</body>
+</html>

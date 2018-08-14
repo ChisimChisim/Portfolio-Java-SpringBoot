@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+/****** book/listBook ******/
+/*table*/
+.booklist1 {
+	color: blue;
+	font-weight:bold;
+}
+
+/****** book/bookDescription ******/
+.inline {
+	display: inline;
+}
+.title-size{
+	font-size:40px;
+}
+
+.title-margin{
+	margin: 40px;
+}
+
+.description {
+	font-style: italic;
+    font-size: 20px;
+}
+
+.margin-right{
+	margin-left : auto ;
+	margin-right : 0;
+}
