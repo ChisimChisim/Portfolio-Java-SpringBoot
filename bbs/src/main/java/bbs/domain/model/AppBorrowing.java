@@ -31,8 +31,7 @@ public class AppBorrowing implements Serializable {
 	// Constructor	
 	public AppBorrowing() {}
 
-
-	public AppBorrowing(Long borrowingId, LocalDate borrowingDate, LocalDate dueDate, LocalDate returnDate,
+    public AppBorrowing(Long borrowingId, LocalDate borrowingDate, LocalDate dueDate, LocalDate returnDate,
 			String status, Book book, User user) {
 		this.borrowingId = borrowingId;
 		this.borrowingDate = borrowingDate;
@@ -43,7 +42,8 @@ public class AppBorrowing implements Serializable {
 		this.user = user;
 	}
 
-    //Getter and Setter
+
+	//Getter and Setter
 	public Long getBorrowingId() {
 		return borrowingId;
 	}
@@ -112,7 +112,6 @@ public class AppBorrowing implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
 	
 	
 }

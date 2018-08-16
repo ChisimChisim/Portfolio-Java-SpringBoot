@@ -2,11 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Book </title>
+<title>Book Description</title>
 <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7-1/css/bootstrap.css"  rel="stylesheet"  media="screen"/>
-    <link rel="stylesheet" type="text/css"
-      href="../../static/css/style/css"
-      th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="../../static/css/style.css"/>
     <script th:src="@{/webjars/jquery/2.1.4/jquery.min.js}" src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js" ></script>
     <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}" src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7-1/css/bootstrap.js" ></script>  
 </head>
@@ -43,8 +41,54 @@
         </p>  
         
    </section>
-      
-     <input class="btn btn-primary btn-lg btn-block" type="submit" value="Check-out!"/>
+   <span th:if="${bookInfo.book.bookStatus.status=='1'}"> 
+    <button class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#modal-confirm">
+      Check-out
+    </button> 
+   </span>
+ <!-- modal Setting start -->
+                 <div class="modal modal-lg" id="modal-confirm" tabindex="-1">
+                     <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="modal-label">Check-out confirmation</h4>
+                            </div>
+           <!-- modal body -->
+                            <div class="modal-body">
+                               <table class="table table-bordered">
+                                  <tr>
+                                    <th class="info col-md-3">Book No.</th>
+                                    <td><span th:text="${bookInfo.book.bookId}"></span></td>
+                                  </tr>
+                                  <tr>
+                                    <th class="info col-md-3">Title</th>
+                                    <td><span th:text="${bookInfo.book.title}"></span></td>
+                                  </tr> 
+                                  <tr>
+                                    <th class="info col-md-3">Check-out date</th>
+                                    <td><span th:text="${checkOutDate}"></span></td>
+                                  </tr> 
+                                  <tr>
+                                    <th class="info col-md-3">Due date</th>
+                                    <td><span th:text="${dueDate}"></span></td>
+                                  </tr> 
+                               </table>    
+                             </div>
+             <!-- modal footer -->
+                           <div class="modal-footer center">
+                           <h4>Are you ready to complete the check-out?</h4>
+                           <form th:action="@{'/borrowing/' + ${bookInfo.book.bookId} + '/checkout/'}" method="post"> 
+                             <input class="btn btn-danger btn-lg center" type="submit" value="Yes"/>
+                             <input class="btn btn-default btn-lg center" type="submit" data-dismiss="modal" value="No"/>                    
+                           </form>
+                           </div>
+                        </div>
+                     </div>
+                   </div>
+  <!-- modal Setting end --> 
       
    <br/>  
    <hr>

@@ -28,6 +28,11 @@ public class BookStatus implements Serializable{
 		this.status = status;
 		this.book = book;
 	}
+	
+	public BookStatus(Long id, String status) {
+		this.id = id;
+		this.status = status;
+	}
 
 
 	public Long getId() {

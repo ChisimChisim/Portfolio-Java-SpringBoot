@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Check-out confirmation</title>
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7-1/css/bootstrap.css"  rel="stylesheet"  media="screen"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="../../static/css/style.css"  />
+    <script th:src="@{/webjars/jquery/2.1.4/jquery.min.js}" src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js" ></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}" src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7-1/css/bootstrap.js" ></script>  
+</head>
+<body>
+<div class="container">
+  <h1>Book Borrowing System</h1>
+      <fieldset>
+        <legend>
+          Check-out completion
+        </legend>
+   
+         <table class="table table-bordered">
+            <tr>
+              <th class="info col-md-3">Borrowing No.</th>
+              <td class="success"><span th:text="${checkout.borrowingId}"></span></td>
+            </tr>
+            <tr>
+              <th class="info col-md-3">Book No.</th>
+              <td><span th:text="${checkout.book.bookId}"></span></td>
+            </tr>
+            <tr>
+              <th class="info col-md-3">Title</th>
+              <td><span th:text="${checkout.book.title}"></span></td>
+            </tr> 
+            <tr>
+              <th class="info col-md-3">Check-out date</th>
+              <td><span th:text="${checkout.borrowingDate}"></span></td>
+            </tr> 
+            <tr>
+              <th class="info col-md-3">Due date</th>
+              <td><span th:text="${checkout.dueDate}"></span></td>
+            </tr> 
+          </table>    
+        
+        
+        <form th:action="@{'/books/'}" class="center">
+          <input class="btn btn-defaule" type="submit" value="Back to book list" />
+        </form>
+        
+   </fieldset>
+  </div>
+</body>
+</html>
