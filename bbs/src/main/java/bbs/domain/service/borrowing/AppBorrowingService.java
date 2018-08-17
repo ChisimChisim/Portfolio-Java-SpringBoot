@@ -31,10 +31,16 @@ public class AppBorrowingService {
 	BookRepository bookRepository;
 	
 	public List<AppBorrowing> getBorrowingList(){
-	  List<AppBorrowing> appBorrowing = appBorrowingRepository.findByStatusAndUser(dummyUser().getUserId());
+	  List<AppBorrowing> appBorrowing = appBorrowingRepository.findByStatus0AndUser(dummyUser().getUserId());
 	  return appBorrowing;
 	  
 	}
+	
+	public List<AppBorrowing> historyList(){
+		  List<AppBorrowing> appBorrowing = appBorrowingRepository.findByStatus1AndUser(dummyUser().getUserId());
+		  return appBorrowing;
+		  
+		}
 	
 	public AppBorrowing checkOut(Long bookId) {
 	 //LockModeType.PESSIMISTIC_WRITE   
@@ -65,6 +71,25 @@ public class AppBorrowingService {
 		
 		return appB;
 	    
+	}
+	
+	public void returnBook(Long bookId, Long borrowingId) {
+		
+       
+	    
+	    AppBorrowing appB = appBorrowingRepository.findOneById(borrowingId);
+	    appB.setReturnDate(LocalDate.now());
+		appB.setStatus("1");
+		//Return the book
+		appBorrowingRepository.save(appB);
+		
+		BookStatus bookStatus = new BookStatus();
+	    bookStatus.setId(bookId);
+	    bookStatus.setStatus("1");
+	    //Change book status
+	    bookStatusRepository.save(bookStatus); 
+	   
+		
 	}
 	
 	private User dummyUser() {

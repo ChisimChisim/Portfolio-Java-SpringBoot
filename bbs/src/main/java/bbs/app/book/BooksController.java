@@ -38,9 +38,6 @@ public class BooksController {
 		model.addAttribute("checkOutDate", LocalDate.now());
 		model.addAttribute("dueDate", LocalDate.now().plusDays(14));
 		
-		List<AppBorrowing> appBorrowing = appBorrowingService.getBorrowingList();
-		model.addAttribute("currentBorrowings", appBorrowing);
-		
 		return "book/listBooks";
 		
 	}

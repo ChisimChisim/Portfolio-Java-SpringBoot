@@ -9,18 +9,39 @@
     <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}" src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7-1/css/bootstrap.js" ></script>  
 </head>
 <body>
+<!-- Navigation bar -->
+<nav class="navbar navbar-inverse navbar-sticky-top">
+  <div class="container-fluid">
+   <div class="navbar-header">
+      <a class="navbar-brand" href="../../template/book/listBooks.html">Book Borrowing System</a>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#nav_target">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+   <ul class="nav navbar-nav navbar-right">
+    <li class="active">
+       <a href="/books" >Book List</a>
+    </li>  
+    <li>
+       <a href="/borrowing/list">Return</a>
+    </li>
+    <li>
+       <a href="/borrowing/history">My history</a>
+    </li>
+   </ul>
+</div>
+</nav>
+<!-- Navigation bar end -->
+
 <div class="container-fluid">
-  <h2>Book Borrowing System</h2>
-  <hr>
   <div class="inline">
   <span th:text="${bookInfo.book.title}" class="title-margin title-size"></span>
   Average rating: 
   <span th:text="${bookInfo.aveRate}" class="title-size"></span>
   /5
   </div>
-   <form th:action="@{'/books/'}" class="pull-right">
-     <input class="btn btn-defaule" type="submit" value="Back to book list" />
-   </form>
   
   <section class="container-fluid">
         
