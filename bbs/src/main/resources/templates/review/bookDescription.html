@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Book Description</title>
+<link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7-1/css/bootstrap.css"  rel="stylesheet"  media="screen"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="../../static/css/style.css"/>
+    <script th:src="@{/webjars/jquery/2.1.4/jquery.min.js}" src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js" ></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}" src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7-1/css/bootstrap.js" ></script>  
+</head>
+<body>
+<!-- Navigation bar -->
+<nav class="navbar navbar-inverse navbar-sticky-top">
+  <div class="container-fluid">
+   <div class="navbar-header">
+      <a class="navbar-brand" href="../../template/book/listBooks.html">Book Borrowing System</a>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#nav_target">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+   <ul class="nav navbar-nav navbar-right">
+    <li class="active">
+       <a href="/books" >Book List</a>
+    </li>  
+    <li>
+       <a href="/borrowing/list">Return</a>
+    </li>
+    <li>
+       <a href="/borrowing/history">My history</a>
+    </li>
+   </ul>
+</div>
+</nav>
+<!-- Navigation bar end -->
+
+<div class="container-fluid">
+
+  <div class="inline">
+  <span th:text="${bookInfo.book.title}" class="title-margin title-size"></span>
+  Average rating: 
+  <span th:text="${bookInfo.aveRate}" class="title-size"></span>
+ 
+       <p class="description">
+          <span th:text="${bookInfo.book.text}"></span>
+       </p> 
+       <p>  
+          Book ID: <span th:text="${bookInfo.book.bookId}"></span>
+          <br/>
+          Title: <span th:text="${bookInfo.book.title}"></span>
+          <br/>
+          Genre: <span th:text="${bookInfo.book.genru}"></span>
+          <br/>
+          Author: <span th:text="${bookInfo.book.author}"></span>
+          <br/>
+          Released date: <span th:text="${bookInfo.book.releasedDate}"></span>
+          <br/>
+        </p>  
+        
+    <form th:action="@{'/borrowing/' + ${bookInfo.book.bookId} + '/checkout'}" method="get" >
+        <span th:if="${bookInfo.book.bookStatus.status=='1'}">
+        <input class="btn btn-primary btn-block" type="submit" name="confirm" value="Check-out"/>
+        <input type="hidden" name="title" th:value="${bookInfo.book.title}"/>
+        </span>
+    </form>
+  
+ 
+   <br/>  
+   <hr> 
+    
+    <div class="panel panel-info" style="width:800px;">
+      <div class="panel-heading panel-info col-md-12">My Review</div>
+        <div class="panel-body">
+        <span th:if="${reviewExist=='0'}"> 
+              <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-review">
+                  ADD YOUR RATING
+              </button> 
+        </span>
+        
+      <div class="inline" style="width:800px; word-wrap: break-word;"> 
+        <span th:if="${reviewExist=='1'}"> 
+             My Rating: <span th:text="${myReview.rate}" style="font-size:15px; "></span> <br>
+             My review: <span th:text="${myReview.comment}" style="font-size:15px; "></span> 
+             <br>
+              <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-review">
+                  EDIT YOUR RATING
+             </button>
+        </span>
+        <form th:action="@{'/reviews/' + ${bookInfo.book.bookId}}" method="post" class="inline">
+        <span th:if="${reviewExist=='1'}"> 
+             <input class="btn btn-danger btn-sm center inline" type="submit" name="delete" value="DELETE"/>
+             <input type="hidden" name="userId" th:value="${myReview.user.userId}">     
+        </span>
+        </form>
+       </div>
+       <div class="col-md-3"></div>
+           
+        </div>
+      </div>  
+      </div>  
+<!-- Review list start-->      
+   <br> 
+   <h3>Review List</h3>
+    <table class="table table-striped table-bordered table-condensed" style="table-layout:fixed;">
+    <tr>
+      <th  class="info col-md-2">Rating</th>
+      <th  class="info col-md-7">Review</th>
+      <th  class="info col-md-3">User name</th>
+    </tr>
+    <tr th:each="review : ${reviews}">
+    <td  class="col-md-1">
+       <span th:text="${review.rate}"></span>
+    </td>
+    <td class="col-md-7" style="word-wrap: break-all;" >
+       <p th:text="${review.comment}" ></p>
+    </td>
+    <td class="col-md-4">
+       <span th:text="${review.user.firstName} + ' ' + ${review.user.lastName}"></span>
+    </td>
+   </tr>
+      
+   </table>
+   
+   <!-- modal Setting start -->    
+                 <div class="modal modal-lg" id="modal-review" tabindex="-1">
+                     <div class="modal-dialog">
+            
+                        <div class="modal-content">
+                        <form th:action="@{'/reviews/' + ${bookInfo.book.bookId}}" th:object="${reviewForm}" method="post"> 
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="modal-label">Add/Edit your review</h4>
+                            </div>
+           <!-- modal body -->
+                           
+                            <div class="modal-body">
+                            <!-- Rating -->
+                               <div class="form-group">
+                                 <label>Your rating</label>
+
+                                 <select class="form-control" th:field="*{rate}">
+                                   <option  th:each="rating: ${ratingList}" th:text="${rating}" th:value="${rating}">1</option>
+                                 </select>
+                               </div>
+                             <!-- comment -->
+                               <div class="form-group">
+                                 <label>Your review</label>
+                                 <p>The maximum number of letters is 150. </p>
+                                 <textarea class="form-control" rows="3" placeholder="Add your review" th:field="*{comment}" maxlength="150"></textarea>
+                               </div>
+                          
+                             </div>
+                             
+             <!-- modal footer -->
+                           <div class="modal-footer center">
+                           <h4>Would you like to save your review?</h4>
+                             <input type="hidden" name="userId" th:value="${user.userId}"/>
+                             <input class="btn btn-danger btn-lg center" name="create" type="submit" value="Save"/>
+                             <input class="btn btn-default btn-lg center" type="submit" data-dismiss="modal" value="Cancel"/>                    
+                          
+                           </div>
+                           </form>
+                        </div>
+                     </div>
+                   </div>     
+                           
+  <!-- modal Setting end -->       
+   </div>
+<!-- Review list end-->      
+
+</body>
+</html>

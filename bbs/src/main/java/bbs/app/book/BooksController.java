@@ -31,27 +31,13 @@ public class BooksController {
 	@Autowired
 	AppBorrowingService appBorrowingService;
 	
+	
 	@GetMapping
 	String listBooks(Model model) {
 		List<Rating> book = ratingService.findAll();
 		model.addAttribute("books", book);
-		model.addAttribute("checkOutDate", LocalDate.now());
-		model.addAttribute("dueDate", LocalDate.now().plusDays(14));
 		
 		return "book/listBooks";
-		
-	}
-	
-	@GetMapping(path = "{bookId}")
-	String bookDescription(@PathVariable("bookId") Long bookId, Model model) {
-		Rating book = ratingService.findOneByBookId(bookId);
-		List<Review> reviews = reviewService.findByBookId(bookId);
-		
-		model.addAttribute("bookInfo", book);
-		model.addAttribute("reviews", reviews);
-		model.addAttribute("checkOutDate", LocalDate.now());
-		model.addAttribute("dueDate", LocalDate.now().plusDays(14));
-	    return  "book/bookDescription";
 		
 	}
 	

@@ -1,6 +1,8 @@
 package bbs.domain.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -14,6 +16,7 @@ public class Review implements Serializable{
 	@Lob
 	private String comment;
 	
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="book_id", insertable=false, updatable=false)
 	@MapsId("bookId")
@@ -23,7 +26,6 @@ public class Review implements Serializable{
 	@JoinColumn(name="user_id", insertable=false, updatable=false)
 	@MapsId("userId")
 	private User user;
-
 	
 	// Constructor	
 	public Review() {}
@@ -37,8 +39,8 @@ public class Review implements Serializable{
 		this.user = user;
 	}
 
-    //Getter and Setter
-	public ReviewId getReviewId() {
+	//Getter and Setter
+    public ReviewId getReviewId() {
 		return reviewId;
 	}
 
@@ -46,7 +48,7 @@ public class Review implements Serializable{
 	public void setReviewId(ReviewId reviewId) {
 		this.reviewId = reviewId;
 	}
-
+	
 
 	public Integer getRate() {
 		return rate;
@@ -86,9 +88,31 @@ public class Review implements Serializable{
 	public void setUser(User user) {
 		this.user = user;
 	}
-
- 
+	
+	//calculate average Rating by bookId
+	public Double calAverage(List<Review> target) {
+		//number of review record
+		Long numRate = target
+				.stream()
+				.count();
+		if(numRate==0) {
+			return 0.0;
+		}
+        //total rating
+	    Long sumRate = target
+				.stream()
+				.mapToLong(x -> x.getRate() )
+				.sum();
+        //avarage rating
+	    Double aveRate = ((double)sumRate / (double)numRate);	
+	    //To display the numbers truncating the numbers beyond the second decimal point.
+	    BigDecimal x = new BigDecimal(aveRate);
+	    x = x.setScale(1, BigDecimal.ROUND_FLOOR);
+	    Double rate = x.doubleValue();
+			
+		return rate;
+	}
 	
 	
-
-}
+	
+}  

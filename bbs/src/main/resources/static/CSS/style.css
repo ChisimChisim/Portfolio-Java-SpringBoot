@@ -14,7 +14,7 @@
 
 /****** book/bookDescription ******/
 .inline {
-	display: inline;
+	display: inline-block;
 }
 .title-size{
 	font-size:40px;
@@ -34,7 +34,15 @@
 	margin-right : 0;
 }
 
+.text-size10{
+	font-size:20px;
+	background-color: lightblue;
+}
+
+
+
 /****** borrowing/checkOutConfirm ******/
 .center{
 	text-align:center;
 }
+

@@ -36,36 +36,45 @@
 <!-- Navigation bar end -->
 
 <div class="container">
-  <h3> Check-out complete</h3>
+  <h3> Check-out confirmation</h3>
    <hr>
+   <!-- Check-out fail message -->
+   <p style="color: red" th:if="${error != null}" th:text="${error}"></p>
+   <!---->
    
          <table class="table table-bordered">
             <tr>
               <th class="info col-md-3">Borrowing No.</th>
-              <td class="success"><span th:text="${checkout.borrowingId}"></span></td>
-            </tr>
+              <td><span th:text="${borrowingId}"></span></td>
+            </tr> 
             <tr>
               <th class="info col-md-3">Book No.</th>
-              <td><span th:text="${checkout.book.bookId}"></span></td>
+              <td><span th:text="${bookId}"></span></td>
             </tr>
             <tr>
               <th class="info col-md-3">Title</th>
-              <td><span th:text="${checkout.book.title}"></span></td>
+              <td><span th:text="${title}"></span></td>
             </tr> 
             <tr>
               <th class="info col-md-3">Check-out date</th>
-              <td><span th:text="${checkout.borrowingDate}"></span></td>
+              <td><span th:text="${checkOutDate}"></span></td>
             </tr> 
             <tr>
               <th class="info col-md-3">Due date</th>
-              <td><span th:text="${checkout.dueDate}"></span></td>
+              <td><span th:text="${dueDate}"></span></td>
             </tr> 
           </table>    
-        
-        <hr>
-        <form th:action="@{'/books'}" method="get" class="center"> 
-         <input class="btn btn-default center" type="submit" value="Back to book list"/>
-        </form> 
+          
+          <div class="inline">
+          <h4>Are you ready to complete the check-out?</h4>
+              <form th:action="@{'/borrowing/' + ${bookId} + '/checkout/'}" method="post" class="inline"> 
+              <input class="btn btn-danger btn-lg" type="submit" value="Yes"/>
+              </form> 
+              <form th:action="@{'/books'}" method="get" class="inline">
+              <input class="btn btn-default btn-lg" type="submit" value="No"/>    
+              </form>
+          </div>    
+                       
   </div>
 </body>
 </html>

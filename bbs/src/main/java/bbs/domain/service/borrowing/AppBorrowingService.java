@@ -66,7 +66,7 @@ public class AppBorrowingService {
 		appB.setStatus("0");
 		appB.setBook(book);
 		appB.setUser(dummyUser());
-		//Registor the check-out info
+		//Register the check-out info
 		appBorrowingRepository.save(appB); 
 		
 		return appB;
@@ -74,13 +74,10 @@ public class AppBorrowingService {
 	}
 	
 	public void returnBook(Long bookId, Long borrowingId) {
-		
-       
-	    
 	    AppBorrowing appB = appBorrowingRepository.findOneById(borrowingId);
 	    appB.setReturnDate(LocalDate.now());
 		appB.setStatus("1");
-		//Return the book
+		//Return the book(change status of appBorrowing Entity)
 		appBorrowingRepository.save(appB);
 		
 		BookStatus bookStatus = new BookStatus();
@@ -91,17 +88,15 @@ public class AppBorrowingService {
 	   
 		
 	}
-	
+	    
 	private User dummyUser() {
-		User user = new User();
-		user.setUserId("ychieko");
-		user.setFirstName("Chieko");
-		user.setLastName("Yamamoto");
-		user.setRoleName(RoleName.ADMIN);
-		return user;
-	}
-	    
-	    
+   		User user = new User();
+   		user.setUserId("ychieko");
+   		user.setFirstName("Chieko");
+   		user.setLastName("Yamamoto");
+   		user.setRoleName(RoleName.ADMIN);
+   		return user;
+   	}
 	  
 	  
 	}

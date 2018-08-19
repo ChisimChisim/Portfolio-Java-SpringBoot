@@ -25,4 +25,9 @@ public class RatingService {
 		   Rating rating = ratingRepository.findOneBybookId(bookId);
 		   return rating;
 	   }
+	   
+       public Rating update(Rating rating) {
+    	     ratingRepository.save(rating);
+    	   return rating;
+       }
 }

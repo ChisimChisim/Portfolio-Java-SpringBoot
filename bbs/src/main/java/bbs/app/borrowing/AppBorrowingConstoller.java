@@ -1,6 +1,7 @@
 package bbs.app.borrowing;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import bbs.domain.model.AppBorrowing;
 import bbs.domain.service.book.BookService;
@@ -25,6 +27,21 @@ public class AppBorrowingConstoller {
 	@Autowired
 	BookService bookService;
 	
+	@GetMapping(path="{bookId}/checkout", params="confirm")
+	String confirmCheckOut(@PathVariable("bookId") Long bookId,
+			@RequestParam("title") String title, 
+			 Model model ) {
+	
+		model.addAttribute("borrowingId", "-");
+		model.addAttribute("bookId", bookId);
+		model.addAttribute("title", title);
+		model.addAttribute("checkOutDate", LocalDate.now());
+		model.addAttribute("dueDate", LocalDate.now().plusDays(14));
+		
+		return "borrowing/checkOutConfirm";
+		
+	}
+	
 	@PostMapping(path="{bookId}/checkout")
 	String checkOut(@PathVariable("bookId") Long bookId, 
 			 Model model) {
@@ -37,9 +54,8 @@ public class AppBorrowingConstoller {
 		
 		}catch(UnavairableBorrowingException e){
 			model.addAttribute("error", e.getMessage());
-			return "borrowing/checkOutComplete";	
+			return "redirect:borrowing/checkOutConfirm";	
 		}
-
 		model.addAttribute("checkout", checkOutInfo);
 		return "borrowing/checkOutComplete";
 	}
@@ -55,7 +71,7 @@ public class AppBorrowingConstoller {
 	@PostMapping(path="{bookId}/{borrowingId}/return")
 	String returnBook(@PathVariable("bookId") Long bookId, @PathVariable("borrowingId") Long borrowingId, Model model) {
 		appBorrowingService.returnBook(bookId, borrowingId);
-		return "borrowing/history";
+		return "redirect:/borrowing/list";
 		
 	}
 	

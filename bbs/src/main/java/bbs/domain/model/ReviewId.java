@@ -20,8 +20,6 @@ public class ReviewId implements Serializable{
 		this.userId = userId;
 	}
 
-
-    //hash an equals
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -30,7 +28,6 @@ public class ReviewId implements Serializable{
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -54,7 +51,6 @@ public class ReviewId implements Serializable{
 		return true;
 	}
 
-	//Getter and Setter
 	public Long getBookId() {
 		return bookId;
 	}
@@ -70,6 +66,8 @@ public class ReviewId implements Serializable{
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	
+
+
+    
 
 }
