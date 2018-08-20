@@ -19,7 +19,7 @@ public class AppBorrowing implements Serializable {
 	
 	private String status;     //(1:available, 0:borrowing)
 	
-	@ManyToOne(cascade = {CascadeType.MERGE})
+	@ManyToOne
 	@JoinColumn(name="book_id")
 	private Book book;
 	

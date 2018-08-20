@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import bbs.domain.model.AppBorrowing;
 import bbs.domain.service.book.BookService;
 import bbs.domain.service.borrowing.AppBorrowingService;
 import bbs.domain.service.borrowing.UnavairableBorrowingException;
+import bbs.domain.service.user.BorrowingUserDetails;
 
 
 @Controller
@@ -44,13 +46,14 @@ public class AppBorrowingConstoller {
 	
 	@PostMapping(path="{bookId}/checkout")
 	String checkOut(@PathVariable("bookId") Long bookId, 
+			@AuthenticationPrincipal BorrowingUserDetails userDetails,
 			 Model model) {
 		
 		AppBorrowing checkOutInfo;
 		
 		try {
 			
-		checkOutInfo = appBorrowingService.checkOut(bookId);
+		checkOutInfo = appBorrowingService.checkOut(bookId, userDetails.getUser());
 		
 		}catch(UnavairableBorrowingException e){
 			model.addAttribute("error", e.getMessage());
@@ -61,8 +64,8 @@ public class AppBorrowingConstoller {
 	}
 	
 	@GetMapping(path="list")
-	String currentList(Model model) {
-		List<AppBorrowing> appBorrowing = appBorrowingService.getBorrowingList();
+	String currentList(@AuthenticationPrincipal BorrowingUserDetails userDetails, Model model) {
+		List<AppBorrowing> appBorrowing = appBorrowingService.getBorrowingList(userDetails.getUsername());
 		model.addAttribute("currentBorrowings", appBorrowing);
 		return  "borrowing/currentList";
 	}
@@ -76,9 +79,9 @@ public class AppBorrowingConstoller {
 	}
 	
 	@GetMapping(path="history")
-	String hiroty(Model model) {
+	String hiroty(@AuthenticationPrincipal BorrowingUserDetails userDetails, Model model) {
 		
-		List<AppBorrowing> history = appBorrowingService.historyList();
+		List<AppBorrowing> history = appBorrowingService.historyList(userDetails.getUsername());
 		model.addAttribute("histories", history);
 		
 		return  "borrowing/history";

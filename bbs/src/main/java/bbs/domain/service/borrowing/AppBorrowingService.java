@@ -30,19 +30,19 @@ public class AppBorrowingService {
 	@Autowired
 	BookRepository bookRepository;
 	
-	public List<AppBorrowing> getBorrowingList(){
-	  List<AppBorrowing> appBorrowing = appBorrowingRepository.findByStatus0AndUser(dummyUser().getUserId());
+	public List<AppBorrowing> getBorrowingList(String userId){
+	  List<AppBorrowing> appBorrowing = appBorrowingRepository.findByStatus0AndUser(userId);
 	  return appBorrowing;
 	  
 	}
 	
-	public List<AppBorrowing> historyList(){
-		  List<AppBorrowing> appBorrowing = appBorrowingRepository.findByStatus1AndUser(dummyUser().getUserId());
+	public List<AppBorrowing> historyList(String userId){
+		  List<AppBorrowing> appBorrowing = appBorrowingRepository.findByStatus1AndUser(userId);
 		  return appBorrowing;
 		  
 		}
 	
-	public AppBorrowing checkOut(Long bookId) {
+	public AppBorrowing checkOut(Long bookId, User user) {
 	 //LockModeType.PESSIMISTIC_WRITE   
         AppBorrowing appBorrowing = appBorrowingRepository.findOneForUpdateBybookIdAndStatus(bookId);
         
@@ -65,7 +65,7 @@ public class AppBorrowingService {
 	    appB.setReturnDate(null);
 		appB.setStatus("0");
 		appB.setBook(book);
-		appB.setUser(dummyUser());
+		appB.setUser(user);
 		//Register the check-out info
 		appBorrowingRepository.save(appB); 
 		
@@ -88,15 +88,6 @@ public class AppBorrowingService {
 	   
 		
 	}
-	    
-	private User dummyUser() {
-   		User user = new User();
-   		user.setUserId("ychieko");
-   		user.setFirstName("Chieko");
-   		user.setLastName("Yamamoto");
-   		user.setRoleName(RoleName.ADMIN);
-   		return user;
-   	}
 	  
 	  
 	}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Login form</title>
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" media="screen"/>
+<link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7-1/css/bootstrap.css" rel="stylesheet" media="screen"/>
+<script th:src="@{/webjars/jquery/2.1.4/jquery.min.js}" src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js" ></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}" src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7-1/css/bootstrap.js" ></script>  
+</head>
+<body>
+<div class="container">
+  <h1>Book Borrowing System</h1>
+  <form class="form-signin" method="post" th:action="@{/login}">
+   <h2 class="form-signin-heading">login form</h2>
+   
+   <div th:if="${param.error}" class="alert alert-danger">
+       There is no user with the User name and Password.
+   </div>
+   
+   <input type="text" class="form-control" name="username" placeholder="Username"
+        required="required" autofocus="autofocus"/>
+   <input type="text" class="form-control" name="password" placeholder="Password"
+        required="required" autofocus="autofocus"/>     
+        
+   <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>     
+  </form>
+</div>
+</body>
+</html>

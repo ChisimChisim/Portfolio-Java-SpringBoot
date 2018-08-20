@@ -12,6 +12,14 @@
 	color: white;
 }
 
+.loginuser-layout{
+	color:white;
+	margin-top:17px;
+	margin-right:30px;
+	font-size:15px;
+	font-style:italic;
+}
+
 /****** book/bookDescription ******/
 .inline {
 	display: inline-block;
@@ -37,6 +45,10 @@
 .text-size10{
 	font-size:20px;
 	background-color: lightblue;
+}
+
+.logout-btn{
+	margin-top:8px;
 }
 
 

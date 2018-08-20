@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +35,7 @@ import bbs.domain.service.book.BookService;
 import bbs.domain.service.book.RatingService;
 import bbs.domain.service.borrowing.AppBorrowingService;
 import bbs.domain.service.review.ReviewService;
+import bbs.domain.service.user.BorrowingUserDetails;
 
 @Controller
 @RequestMapping("reviews")
@@ -53,11 +55,12 @@ public class ReviewController {
 
 	@GetMapping(path = "{bookId}")
 	String bookDescription(@PathVariable("bookId") Long bookId, Model model,
+			@AuthenticationPrincipal BorrowingUserDetails userDetails,
 			ReviewForm form) {
 		
 		Rating book = ratingService.findOneByBookId(bookId);
 		List<Review> reviews = reviewService.findByBookId(bookId);
-		Review review = reviewService.findReview(bookId, dummyUser().getUserId());
+		Review review = reviewService.findReview(bookId, userDetails.getUsername());
 		
 		List<Integer> ratingList = new ArrayList<Integer>();
 		ratingList.add(1);
@@ -77,7 +80,6 @@ public class ReviewController {
 		model.addAttribute("bookInfo", book);
 		model.addAttribute("checkOutDate", LocalDate.now());
 		model.addAttribute("dueDate", LocalDate.now().plusDays(14));
-		model.addAttribute("user", dummyUser());
 		model.addAttribute("ratingList", ratingList);
 		
 		
@@ -109,11 +111,12 @@ public class ReviewController {
 	@PostMapping(path = "{bookId}", params="create")
 	String createReview(@RequestParam("userId") String userId, 
 			@PathVariable("bookId") Long bookId, 
+			@AuthenticationPrincipal BorrowingUserDetails userDetails,
 			ReviewForm form, Model model) {
 		
 		
 		Book book = bookService.findOneByBookId(bookId);
-		User user = dummyUser();
+		User user = userDetails.getUser();
 		
 		//add or edit review
 		ReviewId reviewId = new ReviewId(bookId, userId);
@@ -140,18 +143,4 @@ public class ReviewController {
 		return "redirect:/reviews/{bookId}";
 	}
 	
-	
-	
-	private User dummyUser() {
-   		User user = new User();
-   		user.setUserId("ychieko");
-   		user.setFirstName("Chieko");
-   		user.setLastName("Yamamoto");
-   		user.setRoleName(RoleName.ADMIN);
-   		return user;
-   	}
-
-	
-	
-
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <title>Book Description</title>
@@ -8,7 +9,7 @@
     <script th:src="@{/webjars/jquery/2.1.4/jquery.min.js}" src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js" ></script>
     <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}" src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7-1/css/bootstrap.js" ></script>  
 </head>
-<body>
+<body th:with="user=${#authentication.principal.user}"> <!-- get login user -->
 <!-- Navigation bar -->
 <nav class="navbar navbar-inverse navbar-sticky-top">
   <div class="container-fluid">
@@ -19,10 +20,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      
     </div>
+    
    <ul class="nav navbar-nav navbar-right">
     <li class="active">
-       <a href="/books" >Book List</a>
+       <form  th:action="@{/logout}" method="post" class="active">
+       <input type="submit" class="btn btn-default logout-btn"  value="log out"/>
+       </form>
+    </li>   
+    <li>
+     <a href="/books" >Book List</a>
     </li>  
     <li>
        <a href="/borrowing/list">Return</a>
@@ -106,7 +114,8 @@
     <tr>
       <th  class="info col-md-2">Rating</th>
       <th  class="info col-md-7">Review</th>
-      <th  class="info col-md-3">User name</th>
+      <th  class="info col-md-2">User name</th>
+      <th  class="info col-md-1"></th>
     </tr>
     <tr th:each="review : ${reviews}">
     <td  class="col-md-1">
@@ -117,6 +126,13 @@
     </td>
     <td class="col-md-4">
        <span th:text="${review.user.firstName} + ' ' + ${review.user.lastName}"></span>
+    </td>
+    <td>
+    <form th:action="@{'/reviews/' + ${review.book.bookId}}" method="post" class="inline"
+            sec:authorize="${hasRole('ADMIN') or #vars.user.userId == #vars.review.user.userId}">
+             <input class="btn btn-danger btn-sm center inline" type="submit" name="delete" value="Delete"/>
+             <input type="hidden" name="userId" th:value="${review.user.userId}">     
+    </form>
     </td>
    </tr>
       

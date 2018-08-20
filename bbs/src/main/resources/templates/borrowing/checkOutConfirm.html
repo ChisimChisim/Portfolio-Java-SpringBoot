@@ -21,8 +21,13 @@
       </button>
     </div>
    <ul class="nav navbar-nav navbar-right">
-    <li class="active">
-       <a href="/books" >Book List</a>
+     <li class="active">
+       <form  th:action="@{/logout}" method="post" class="active">
+       <input type="submit" class="btn btn-default logout-btn"  value="log out"/>
+       </form>
+    </li>   
+    <li>
+     <a href="/books" >Book List</a>
     </li>  
     <li>
        <a href="/borrowing/list">Return</a>
