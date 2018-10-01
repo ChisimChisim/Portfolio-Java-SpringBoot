@@ -3,10 +3,6 @@ package bbs.domain.service.borrowing;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import bbs.domain.model.AppBorrowing;
 import bbs.domain.model.Book;
 import bbs.domain.model.BookStatus;
-import bbs.domain.model.RoleName;
 import bbs.domain.model.User;
 import bbs.domain.repository.book.BookRepository;
 import bbs.domain.repository.book.BookStatusRepository;

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import bbs.domain.model.Book;
-import bbs.domain.model.Rating;
 import bbs.domain.repository.book.BookRepository;
 
 @Service
